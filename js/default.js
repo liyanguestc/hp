@@ -1,6 +1,10 @@
 var camera, renderer, scene;
 var meshArray = [];
-
+var omega1 =  1.032;
+var omega2 = -3.729;
+var radius1 = 3;
+var radius2x = 12;
+var radius2z = 10;
 head.ready(function() {
     Init();
     animate();
@@ -46,10 +50,14 @@ function animate() {
     for (var i = 0; i < meshArray.length; i++) {
         var curMeshGroup = meshArray[i].meshGroup;
         switch (meshArray[i].name) {
-            case "helloworld":
-                curMeshGroup.rotation.x = 0.8 * Math.sin(5.0 * LEIA.time);
-                curMeshGroup.rotation.z = 0.6 * 0.6 * Math.sin(3.0 * LEIA.time);
+            case "HPLogoBig":
+               curMeshGroup.position.set(-radius1*Math.cos(LEIA.time)-1, -1, 1.0-radius1*Math.sin(LEIA.time)); 
+		curMeshGroup.rotation.y = omega1*LEIA.time;
                 break;
+             case "HPLogoSmall":
+            curMeshGroup.position.set(radius2x*Math.cos(LEIA.time)-1, -1, 1.0+radius2z*Math.sin(LEIA.time)); 
+		curMeshGroup.rotation.y = omega2*LEIA.time;
+            break;
             default:
                 break;
         }
@@ -71,26 +79,44 @@ function animate() {
 function addObjectsToScene() {
     //Add your objects here
     //API to add STL Object
-    /*  Leia_LoadSTLModel({
-        path: 'resource/LEIA1.stl'
+      Leia_LoadSTLModel({
+        path: 'resource/HPLogoBin.stl'
     },function(mesh){
       mesh.material.side = THREE.DoubleSide;
       mesh.castShadow = true;
       mesh.receiveShadow = true;
       mesh.material.metal = true;
-      mesh.scale.set(60, 60, 60);
+      mesh.scale.set(20, 20, 20);
       mesh.position.set(0, 0, 0);
       var group = new THREE.Object3D();
       group.add(mesh);
       scene.add(group);
       meshArray.push({
         meshGroup: group,
-        name: 'LEIA1'
+        name: 'HPLogoBig'
       });
-    });*/
+    });
+  
+  Leia_LoadSTLModel({
+        path: 'resource/HPLogoBin.stl'
+    },function(mesh){
+      mesh.material.side = THREE.DoubleSide;
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      mesh.material.metal = true;
+      mesh.scale.set(8, 8, 8);
+      mesh.position.set(0, 0, 0);
+      var group = new THREE.Object3D();
+      group.add(mesh);
+      scene.add(group);
+      meshArray.push({
+        meshGroup: group,
+        name: 'HPLogoSmall'
+      });
+    });
 
     //Add Text
-    var helloText = createText({
+  /*  var helloText = createText({
         text: "Hello",
         size: 15
     });
@@ -104,13 +130,13 @@ function addObjectsToScene() {
     meshArray.push({
         meshGroup: helloGroup,
         name: "helloworld"
-    });
+    });*/
 
     //add background texture
     var backgroundPlane = Leia_createTexturePlane({
-        filename: 'resource/world-map-background2.jpg',
-        width: 100,
-        height: 75
+        filename: 'resource/checkerboard.jpg',
+        width: 40,
+        height: 30
     });
     backgroundPlane.position.z = -8;
     backgroundPlane.castShadow = false;
@@ -118,7 +144,7 @@ function addObjectsToScene() {
     scene.add(backgroundPlane);
   
   //add center plane
-   var centerPlane = Leia_createTexturePlane({
+ /*  var centerPlane = Leia_createTexturePlane({
         filename: 'resource/crack001.png',
         width: 100,
         height: 75,
@@ -126,7 +152,7 @@ function addObjectsToScene() {
      
     });
     centerPlane.position.z = 0;
-    scene.add(centerPlane);
+    scene.add(centerPlane);*/
 }
 
 function createText(parameters) {
